@@ -24,7 +24,7 @@ class ProductController extends Controller
      *
      * @return void
      */
-    public function index(Request $request): View
+    public function index(Request $request) /*: View */
     {
         // Tampilkan input pencarian
 
@@ -41,6 +41,31 @@ class ProductController extends Controller
         $products = $products->paginate(10);
 
         return view('products.index', compact('products'));
+
+
+        // Daftar kata kunci yang diizinkan
+        //     $allowedKeywords = ['apapun masalahnya, cintaku tetap kamu'];
+
+        //     // Ambil nilai pencarian dari input form
+        //     $keyword = $request->input('keyword');
+
+        //     // Inisialisasi query utama untuk mengambil data produk
+        //     $productsQuery = Product::latest();
+
+        //     // Periksa apakah kata kunci yang dimasukkan pengguna sesuai dengan yang diizinkan
+        //     if ($keyword && in_array($keyword, $allowedKeywords)) {
+        //         // Jika sesuai, lakukan pencarian sesuai dengan kata kunci tersebut
+        //         $productsQuery->where('title', $keyword);
+        //     } elseif ($keyword) {
+        //         // Jika kata kunci tidak sesuai dengan yang diizinkan, berikan pesan bahwa pencarian tidak valid
+        //         return redirect()->route('products.index')->with('error', 'Pencarian tidak valid');
+        //     }
+
+        //     // Ambil 10 data produk per halaman
+        //     $products = $productsQuery->paginate(10);
+
+        //     // Kirim data produk ke view
+        //     return view('products.index', compact('products'));
     }
 
 
@@ -144,10 +169,10 @@ class ProductController extends Controller
 
             //upload new image
             $image = $request->file('image');
-            $image->storeAs('public/products', $image->hashName());
+            $image->storeAs('public/img/products', $image->hashName());
 
             //delete old image
-            Storage::delete('public/products/' . $product->image);
+            Storage::delete('public/img/products' . $product->image);
 
             //update product with new image
             $product->update([
