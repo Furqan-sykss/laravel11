@@ -110,7 +110,7 @@
 
             // Membuat pesan teks
             var message = "Check out this product:\n";
-            message += "Image: " + product.image_url + "\n";
+            // message += "Image: " + product.image_url + "\n";
             message += "Title: " + product.title + "\n";
             message += "Description: " + product.description + "\n";
             message += "Price: " + product.price + "\n";
