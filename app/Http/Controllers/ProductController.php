@@ -14,6 +14,9 @@ use Illuminate\Http\Request;
 //import Http Request
 use Illuminate\Http\RedirectResponse;
 
+use Illuminate\Support\Facades\Redirect;
+
+
 //import Facades Storage
 use Illuminate\Support\Facades\Storage;
 
@@ -96,6 +99,10 @@ class ProductController extends Controller
             'stock'         => 'required|numeric'
         ]);
 
+
+        // Hapus tag HTML dari deskripsi
+        $description = strip_tags($request->description);
+
         //upload image
         $image = $request->file('image');
         $image->storeAs('public/img/products', $image->hashName());
@@ -104,7 +111,7 @@ class ProductController extends Controller
         Product::create([
             'image'         => $image->hashName(),
             'title'         => $request->title,
-            'description'   => $request->description,
+            'description'   => $description,
             'price'         => $request->price,
             'stock'         => $request->stock
         ]);
@@ -217,4 +224,34 @@ class ProductController extends Controller
         //redirect to index
         return redirect()->route('products.index')->with(['success' => 'Data Berhasil Dihapus!']);
     }
+
+
+    // /**
+    //  * Share product to WhatsApp.
+    //  *
+    //  * @param  int  $id
+    //  * @return RedirectResponse
+    //  */
+    // public function shareToWhatsApp($id): RedirectResponse
+    // {
+    //     // Get the product
+    //     $product = Product::findOrFail($id);
+
+    //     // Define the phone number to share with
+    //     $phoneNumber = '6282238584400'; // Replace with the desired phone number
+
+    //     // Create the message
+    //     $message = "Check out this product:\n";
+    //     $message .= "Title: " . $product->title . "\n";
+    //     $message .= "Description: " . $product->description . "\n";
+    //     $message .= "Price: " . $product->price . "\n";
+    //     $message .= "Stock: " . $product->stock . "\n";
+
+
+    //     // Create WhatsApp URL with phone number and message
+    //     $whatsappUrl = 'https://api.whatsapp.com/send?phone=' . $phoneNumber . '&text=' . urlencode($message);
+
+    //     // Redirect to WhatsApp URL
+    //     return redirect()->back()->with('success', 'Produk berhasil dibagikan ke WhatsApp.');
+    // }
 }

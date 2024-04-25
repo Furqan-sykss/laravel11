@@ -15,7 +15,7 @@
         <h3 class="text-center my-4">Laravel 11 </h3>
         <hr>
     </div>
-    <div class="container mt-5">
+    <div class="container-fluid mt-5">
         <div class="row">
             <div class="card border-0 shadow-sm rounded">
                 <div class="card-body">
@@ -30,7 +30,7 @@
 
                     </div>
                     <hr>
-                    <div class="col-md-12">
+                    <div class="col-12">
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
@@ -49,11 +49,14 @@
                                                 class="rounded" style="width: 150px">
                                         </td>
                                         <td>{{ $product->title }}</td>
+                                        <td>{{ $product->description }}</td>
                                         <td>{{ 'Rp ' . number_format($product->price, 2, ',', '.') }}</td>
                                         <td>{{ $product->stock }}</td>
                                         <td class="text-center">
                                             <form onsubmit="return confirm('Apakah Anda Yakin ?');"
                                                 action="{{ route('products.destroy', $product->id) }}" method="POST">
+                                                <button onclick="shareToWhatsApp({{ json_encode($product) }})">Share to
+                                                    WhatsApp</button>
                                                 <a href="{{ route('products.show', $product->id) }}"
                                                     class="btn btn-sm btn-dark">SHOW</a>
                                                 <a href="{{ route('products.edit', $product->id) }}"
@@ -100,6 +103,24 @@
                 timer: 2000
             });
         @endif
+
+
+        function shareToWhatsApp(product) {
+
+
+            // Membuat pesan teks
+            var message = "Check out this product:\n";
+            message += "Image: " + product.image_url + "\n";
+            message += "Title: " + product.title + "\n";
+            message += "Description: " + product.description + "\n";
+            message += "Price: " + product.price + "\n";
+            message += "Stock: " + product.stock;
+
+            // Membuka WhatsApp dengan pesan teks
+            var whatsappUrl = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(message);
+            window.open(whatsappUrl, '_blank');
+
+        }
     </script>
 
 </body>
